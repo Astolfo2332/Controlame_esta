@@ -21,7 +21,7 @@ for a=1:3
             s=impulse(h,t);
         end
     
-        plot(t,s,LineWidth=2)
+        plot(t,s)
         hold on
         n{i}="T: "+num2str(T(i));
         if i==3
@@ -39,7 +39,7 @@ for a=1:3
             else
                 sg=impulse(g,t);
             end
-            plot(t,sg,LineWidth=2)
+            plot(t,sg)
             hold on
             if o==4
             legend(nombre)
@@ -58,26 +58,26 @@ for i=1:2
     figure(4)
     h=tf(wn(i)^2,[1 2*psi*wn(i) wn(i)^2]);
     y=step(h,t);
-    plot(t,y,LineWidth=2)
+    plot(t,y)
     hold on
 end
 legend("wn: 0.9","wn: 3")
 title("Respuesta al escalon funcion segundo orden con psi: 0.3")
 % b
-t=0:0.1:8;
+t=0:0.01:8;
 psi=[0.2 0.7 2];
 wn=7;
 for i=1:3
     figure(5)
     h=tf(wn^2,[1 2*psi(i)*wn wn^2]);
     y=step(h,t);
-    plot(t,y,LineWidth=2)
+    plot(t,y)
     hold on
 end
 legend("psi: 0.2","psi: 0.3","psi: 2")
 title("Respuesta al escalon funcion segundo orden con wn: 7")
 %% 4.3
-t=0:0.1:5;
+t=0:0.01:5;
 k=[0.35 1 1.5 6];
 psi=0.6;
 wn=4;
@@ -94,7 +94,7 @@ for n=1:3
         else
             s=impulse(hr,t);
         end
-        plot(t,s,LineWidth=2)
+        plot(t,s)
         title("Respuesta "+tit(n))
         hold on
         nombre{i}="K: "+num2str(k(i));
