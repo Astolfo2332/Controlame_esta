@@ -18,19 +18,19 @@ while true
         display("Por favor ingrese una valor inferior o igual a 30")
     % Si Mp está dentro del rango (entre 10% y 30%)
     elseif mp>=10 && mp<=30
+            psi=sqrt((log(mp/100)^2)/(pi^2+(log(mp/100)^2)));
             % Solicitar al usuario que ingrese el valor de Tp y validar
             tp=input("Ingrese el tiempo donde desea que se encuentre el valor " + ...
-                "máximo, debe ser un valor superior a 1: ");
+                "máximo, debe ser un valor superior a 1 e inferior a "+num2str((psi*7*pi)/(3*sqrt(1-psi^2)))+": ");
             % Validar si el valor de Tp es nulo o no cumple con la condición
             if length(tp)==0
                 display("Por favor ingrese un valor")
             elseif tp>1
                 t=0:0.01:tp*5;
-                % Calcular los parámetros del sistema de segundo orden
-                psi=sqrt((log(mp/100)^2)/(pi^2+(log(mp/100)^2)));
+                % Calcular los parámetros del sistema de segundo orden                
                 wn=pi/(tp*sqrt(1-psi^2));
                 Ts=3/(wn*psi);
-                % Verificar si Ts es mayor que 7 segundos
+                % Verificar si Ts es menor que 7 segundos
                 if Ts>7
                     display("Para este sobrepaso ingrese un valor de tiempo pico " + ...
                         "menor a "+num2str((psi*7*pi)/(3*sqrt(1-psi^2))))
@@ -39,6 +39,10 @@ while true
                     figure(1)
                     y=step(h,t); %Respuesta al escalón
                     [maxv,maxi]=max(y);     
+                    display("Wn: ")
+                    wn
+                    display("psi: ")
+                    psi
                     % Calcular y mostrar el sobrepaso máximo (Mp)
                     display("Sobrepaso máximo: ")                    
                     Mp=(abs(maxv-1)/1)*100                    
