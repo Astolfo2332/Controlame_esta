@@ -25,3 +25,14 @@ rltool(G)
 G1=feedback(G,3)
 damp(G1)
 step(G1)
+%% d 
+%marignalmente estable
+figure()
+G1=feedback(G,16.75)
+damp(G1)
+step(G1)
+figure()
+%inestable
+G1=feedback(G,16.8)
+damp(G1)
+step(G1)
