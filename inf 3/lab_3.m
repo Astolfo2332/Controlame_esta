@@ -14,6 +14,8 @@ H1=feedback(H,12.5)
 damp(H1)
 H1=feedback(H,5)
 damp(H1)
+H1=feedback(H,17)
+damp(H1)
 %% 4.2
 syms x
 ecu=sym2poly(expand(x*(x+1.5)*(x+2)*(x+3)));
@@ -22,9 +24,20 @@ rlocus(G)
 %% b
 rltool(G)
 %% c
+t=0:0.1:20;
 G1=feedback(G,3)
 damp(G1)
-step(G1)
+figure(1)
+step(G1,t);
+figure(2)
+s=lsim(G1,t,t);
+plot(t,s)
+hold on
+plot(t,t)
+title("Ramp response")
+xlabel("Time(seconds)")
+ylabel("Amplitude")
+legend("Respuesta a la rampa","Rampa")
 %% d 
 %marignalmente estable
 figure()
@@ -43,15 +56,34 @@ rlocus(Gd)
 rltool(Gd)
 %% a
 %Para cumplir la wn de 0.6
+t=0:1:20;
 figure()
 G1=feedback(Gd,4)
 damp(G1)
 step(G1)
 figure()
+s=lsim(G1,t,t);
+plot(t,s)
+hold on
+plot(t,t)
+title("Ramp response")
+xlabel("Time(seconds)")
+ylabel("Amplitude")
+legend("Respuesta a la rampa","Rampa")
+figure()
 % Para cumplir un factor de amortiguamiento de 0.7 y una wn>0.6
 G1=feedback(Gd,2.23)
 damp(G1)
 step(G1)
+figure()
+s=lsim(G1,t,t);
+plot(t,s)
+hold on
+plot(t,t)
+title("Ramp response")
+xlabel("Time(seconds)")
+ylabel("Amplitude")
+legend("Respuesta a la rampa","Rampa")
 %% d
 %marginalmente estable
 figure()
