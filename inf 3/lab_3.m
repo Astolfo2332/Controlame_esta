@@ -58,7 +58,7 @@ rampa(G1,t,3)
 t=0:1:40;
 %marignalmente estable
 figure(4)
-G1=feedback(G*16.75,1);
+G1=feedback(G*16.7751479,1);
 damp(G1)
 step(G1)
 figure(5)
@@ -113,7 +113,7 @@ legend("Rampa","Respuesta a la rampa K=4","Respuesta a la rampa K=2.23")
 %marginalmente estable
 t=0:1:40;
 figure(11)
-G1=feedback(Gd*9.7,1)
+G1=feedback(Gd*9.7275,1)
 damp(G1)
 step(G1)
 figure(12)
