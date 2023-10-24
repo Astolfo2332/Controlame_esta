@@ -51,6 +51,7 @@ rlocus(G)
 rltool(G)
 %% c
 G1=feedback(G*3,1);
+step(G1)
 damp(G1)
 rampa(G1,t,3)
 %% d 
