@@ -27,11 +27,14 @@ Gt=Gp3*Gcs
 Gtf=feedback(Gt,1)
 damp(Gtf)
 rlocus(Gt)
+<<<<<<< HEAD
 %% diseño del compensador de atraso
 [num, den] = tfdata(Gt, 'v')
 H_x = poly2sym(num, x) / poly2sym(den, x)
 Kvo=double(limit(H_x*x,"x",0))
 
+=======
+>>>>>>> 23209ae669fb1c0208559602b584f34ee330ae0d
 %% rtoools
 rltool(Gp3)
 
