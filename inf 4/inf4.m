@@ -2,7 +2,7 @@ close all; clear;
 %% Punto 1
 Gp1=tf(5,[1 3 0])
 Gp1f=feedback(Gp1,1)
-[wn zeta p]=damp(Gp1);
+[wn zeta p]=damp(Gp1f);
 p=max(p(p~=0))
 figure()
 rlocus(Gp1)
@@ -20,14 +20,13 @@ Kv=50 % Del error deseado
 atras= Kc*B*((T*x+1)/(B*T*x+1));
 eq=Kv==limit(x*H_x*atras,"x",0)
 B=double(solve(eq,B)) 
-Zc=-0.5;
+Zc=-0.1;
 Pc=Zc/B;
 GcA=(x-Zc)/(x-Pc)
 %% Calculo de K
 Kc=1/(H_x*GcA)
 Kc=subs(Kc,p)
 Kc=double(norm(Kc))
-Kc=1
 Zceval=subs((x+Zc),p);
 Pceval=subs((x+Pc),p);
 fase=-double(rad2deg(atan(imag(Zceval)/real(Zceval))-atan(imag(Pceval)/real(Pceval))))
@@ -45,6 +44,17 @@ rlocus(Gp1f)
 figure()
 step(Gp1ff)
 damp(Gp1ff)
+%% Comparación
+t=0:1:30;
+figure()
+sgtitle("Comparación de las respuestas en el proceso de diseño")
+subplot(3,1,1)
+rampa(Gp1f,t)
+title("Respuesta a la rampa sistema original")
+subplot(3,1,2)
+rampa(Gp1ff,t)
+title("Respuesta a la rampa compensador de atraso")
+%% Punto 2
 %% Punto 3
 Gp3=tf([10 0.5],[1 0.1 4 0])
 Gp3f=feedback(Gp3,1)
