@@ -45,16 +45,78 @@ figure()
 step(Gp1ff)
 damp(Gp1ff)
 %% Comparación
-t=0:1:30;
+t=0:1:10;
 figure()
 sgtitle("Comparación de las respuestas en el proceso de diseño")
-subplot(3,1,1)
+subplot(2,1,1)
 rampa(Gp1f,t)
 title("Respuesta a la rampa sistema original")
-subplot(3,1,2)
+subplot(2,1,2)
 rampa(Gp1ff,t)
 title("Respuesta a la rampa compensador de atraso")
+
+figure()
+sgtitle("Comparación de las ramas a medida del proceso de diseño")
+subplot(2,1,1)
+rlocus(Gp1)
+title("LGR inicial")
+subplot(2,1,2)
+rlocus(Gp1f)
+title("LGR con compensador de atraso")
+
+figure()
+sgtitle("Comparación de las respuestas en el proceso de diseño")
+subplot(2,1,1)
+step(Gp1f)
+title("Respuesta a escalón sistema original")
+subplot(2,1,2)
+step(Gp1ff)
+title("Respuesta a escalón compensador de atraso")
+
+figure()
+sgtitle("Comparación de las respuestas en el proceso de diseño")
+subplot(2,1,1)
+impulse(Gp1f)
+title("Respuesta a impulso sistema original")
+subplot(2,1,2)
+impulse(Gp1ff)
+title("Respuesta a impulso compensador de atraso")
+
+
 %% Punto 2
+Gp2=tf(10,[2 11 12 0])
+G2a=10/(2*x^3+11*x^2+12*x)
+wn=3;
+zeta=0.7;
+p=roots([1 2*wn*zeta wn^2])
+p=p(1)
+%% Diseño del compensador
+theta=double(phase(subs(G2a,p)))
+theta_g=rad2deg(theta)
+b=phase(p)
+ad_r=pi-theta
+ad_g=180-theta_g
+display("Se necesita hacer una adelanto de: " +num2str(ad_g))
+%% Metodo bisectriz
+pP=(b/2)-(ad_r/2);
+pZ=(b/2)+(ad_r/2);
+P=norm(real(p))+(imag(p)/tan(p));
+Z=norm(real(p))+(imag(p)/tan(p));
+%% Calculo de K
+Gc=(x-Z)/(x-P);
+K=1/(Gc*Gp2);
+K=subs(K,p);
+K=double(norm(K))
+%% Evaluacion del compensador
+Gcs=tf(K*[1 Z],[1 P])
+Gt=Gp2*Gcs
+Gtf=feedback(Gt,1)
+damp(Gtf)
+figure()
+rlocus(Gt)
+figure()
+step(Gtf)
+
 %% Punto 3
 Gp3=tf([10 0.5],[1 0.1 4 0])
 Gp3f=feedback(Gp3,1)
