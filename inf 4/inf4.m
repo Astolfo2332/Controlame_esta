@@ -1,4 +1,4 @@
-close all; clear;
+close all; clear; clc;
 %% Punto 1
 Gp1=tf(5,[1 3 0])
 Gp1f=feedback(Gp1,1)
@@ -86,6 +86,7 @@ title("Respuesta a impulso compensador de atraso")
 %% Punto 2
 Gp2=tf(10,[2 11 12 0])
 G2a=10/(2*x^3+11*x^2+12*x)
+Gp2f=feedback(Gp2,1)
 wn=3;
 zeta=0.7;
 p=roots([1 2*wn*zeta wn^2])
@@ -100,22 +101,61 @@ display("Se necesita hacer una adelanto de: " +num2str(ad_g))
 %% Metodo bisectriz
 pP=(b/2)-(ad_r/2);
 pZ=(b/2)+(ad_r/2);
-P=norm(real(p))+(imag(p)/tan(p));
-Z=norm(real(p))+(imag(p)/tan(p));
+P=norm(real(p))+(imag(p)/tan(pP));
+Z=norm(real(p))+(imag(p)/tan(pZ));
 %% Calculo de K
 Gc=(x-Z)/(x-P);
-K=1/(Gc*Gp2);
+K=1/(Gc*G2a);
 K=subs(K,p);
 K=double(norm(K))
 %% Evaluacion del compensador
 Gcs=tf(K*[1 Z],[1 P])
 Gt=Gp2*Gcs
 Gtf=feedback(Gt,1)
+
 damp(Gtf)
+
 figure()
 rlocus(Gt)
+
+
+t=0:1:30;
 figure()
+sgtitle("Comparación de las respuestas en el proceso de diseño")
+subplot(2,1,1)
+rampa(Gp2f,t)
+title("Respuesta a la rampa sistema original")
+subplot(2,1,2)
+rampa(Gtf,t)
+title("Respuesta a la rampa compensador de adelanto")
+
+figure()
+sgtitle("Comparación de las ramas a medida del proceso de diseño")
+subplot(2,1,1)
+rlocus(Gp2)
+title("LGR inicial")
+subplot(2,1,2)
+rlocus(Gt)
+title("LGR con compensador de adelanto")
+
+figure()
+sgtitle("Comparación de las respuestas en el proceso de diseño")
+subplot(2,1,1)
+step(Gp2f)
+title("Respuesta a escalón sistema original")
+subplot(2,1,2)
 step(Gtf)
+title("Respuesta a escalón compensador de adelanto")
+
+figure()
+sgtitle("Comparación de las respuestas en el proceso de diseño")
+subplot(2,1,1)
+impulse(Gp2f)
+title("Respuesta a impulso sistema original")
+subplot(2,1,2)
+impulse(Gtf)
+title("Respuesta a impulso compensador de adelanto")
+
 
 %% Punto 3
 Gp3=tf([10 0.5],[1 0.1 4 0])
